@@ -4,11 +4,13 @@ import { FileURL } from '@/components/file'
 import python from '@/utils/python'
 import * as t from 'io-ts'
 import codecFrom from '@/utils/io-ts-codec'
+import { datafile as datafile_icon, file_transfer as file_transfer_icon } from '@/icons'
 
 export const GeneCountMatrix = MetaNode.createData('GeneCountMatrix')
   .meta({
     label: 'Gene Count Matrix',
     description: 'A gene count matrix file',
+    icon: [datafile_icon],
   })
   .codec(codecFrom(t.type({
     url: t.string,
@@ -72,6 +74,7 @@ export const GeneCountMatrixFromFile = MetaNode.createProcess('GeneCountMatrixFr
   .meta({
     label: 'Resolve A Gene Count Matrix from a File',
     description: 'Ensure a file contains a gene count matrix, load it into a standard format',
+    icon: [file_transfer_icon],
   })
   .codec()
   .inputs({ file: FileURL })

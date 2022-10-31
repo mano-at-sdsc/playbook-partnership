@@ -5,6 +5,7 @@ import codecFrom from '@/utils/io-ts-codec'
 import dynamic from 'next/dynamic'
 import useSWRImmutable from 'swr/immutable'
 import levenSort from 'leven-sort'
+import { input as input_icon, gene as gene_icon } from '@/icons'
 
 const Suggest2 = dynamic(() => import('@blueprintjs/select').then(({ Suggest2 }) => Suggest2))
 const Button = dynamic(() => import('@blueprintjs/core').then(({ Button }) => Button))
@@ -45,6 +46,9 @@ export const GeneSymbol = MetaNode.createData('GeneSymbol')
     label: 'Gene Symbol',
     description: 'An unresolved Gene Symbol',
     example,
+    color: "#B3CFFF",
+    icon: [gene_icon],
+    tags: {},
   })
   .codec(codecFrom(t.string))
   .view(gene => (
@@ -56,6 +60,7 @@ export const GeneSymbolInput = MetaNode.createProcess('GeneSymbolInput')
   .meta({
     label: 'Input a Gene',
     description: 'A gene input prompt',
+    icon: [input_icon, gene_icon],
     default: '',
   })
   .inputs()

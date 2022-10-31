@@ -4,6 +4,7 @@ import { GeneSymbol } from '@/components/gene'
 import * as t from 'io-ts'
 import codecFrom from '@/utils/io-ts-codec'
 import decodeOrThrow from '@/utils/decodeOrThrow'
+import { gene as gene_icon, mygeneinfo as mygeneinfo_icon } from '@/icons'
 
 export const MyGeneInfoHitC = t.type({
   hits: t.array(t.intersection([
@@ -52,6 +53,7 @@ export const GeneInfo = MetaNode.createData('GeneInfo')
   .meta({
     label: 'Gene Information',
     description: 'A Gene resolved with MyGeneInfo',
+    icon: [gene_icon],
   })
   .codec(codecFrom(MyGeneInfoC))
   .view(geneinfo => (
@@ -65,6 +67,7 @@ export const GeneInfoFromGeneSymbol = MetaNode.createProcess('GeneInfoFromGeneSy
   .meta({
     label: 'Resolve Gene from Symbol',
     description: 'Resolve gene info from gene symbol with MyGeneInfo',
+    icon: [mygeneinfo_icon],
   })
   .codec()
   .inputs({ gene: GeneSymbol })

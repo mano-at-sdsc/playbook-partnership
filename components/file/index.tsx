@@ -3,6 +3,7 @@ import { MetaNode } from '@/spec/metanode'
 import * as t from 'io-ts'
 import codecFrom from '@/utils/io-ts-codec'
 import dynamic from 'next/dynamic'
+import { file as file_icon, input as input_icon } from '@/icons'
 
 const BpFileInput = dynamic(() => import('@blueprintjs/core').then(({ FileInput }) => FileInput))
 const BpButton = dynamic(() => import('@blueprintjs/core').then(({ Button }) => Button))
@@ -11,6 +12,7 @@ export const FileURL = MetaNode.createData('FileURL')
   .meta({
     label: 'File URL',
     description: 'An arbitrary file url',
+    icon: [file_icon],
   })
   .codec(codecFrom(t.string))
   .view(file => (
@@ -25,6 +27,7 @@ export const FileInput = MetaNode.createProcess('FileInput')
     label: 'Input a File',
     description: 'A file upload',
     default: '',
+    icon: [input_icon, file_icon],
   })
   .inputs()
   .output(FileURL)
