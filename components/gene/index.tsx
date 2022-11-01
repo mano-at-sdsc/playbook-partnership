@@ -3,12 +3,22 @@ import { MetaNode } from '@/spec/metanode'
 import * as t from 'io-ts'
 import codecFrom from '@/utils/io-ts-codec'
 import dynamic from 'next/dynamic'
+import useSWRImmutable from 'swr/immutable'
+import levenSort from 'leven-sort'
 
 const Suggest2 = dynamic(() => import('@blueprintjs/select').then(({ Suggest2 }) => Suggest2))
 const Button = dynamic(() => import('@blueprintjs/core').then(({ Button }) => Button))
 const MenuItem = dynamic(() => import('@blueprintjs/core').then(({ MenuItem }) => MenuItem))
 
 const example = 'ACE2'
+
+const fetcher = url => fetch(url).then(r => r.json())
+
+function useHarmonizomeGeneSuggestions(search: string) {
+  const { data, error } = useSWRImmutable(() => search.length >= 2 ? `https://maayanlab.cloud/Harmonizome/api/1.0/suggest?t=gene&q=${encodeURIComponent(search)}` : null, fetcher)
+  const items = data ? levenSort(data, search).slice(0, 10) : []
+  return { items, error }
+}
 
 const itemRenderer = (item: string, { modifiers: { active, disabled }, handleClick }: { modifiers: { active: boolean, disabled: boolean }, handleClick: React.MouseEventHandler }) => (
   <MenuItem
@@ -53,7 +63,8 @@ export const GeneSymbolInput = MetaNode.createProcess('GeneSymbolInput')
   .prompt(props => {
     const [item, setItem] = React.useState('')
     const [query, setQuery] = React.useState('')
-    const items = []
+    const { items, error } = useHarmonizomeGeneSuggestions(query)
+    if (error) console.warn(error)
     React.useEffect(() => { setItem(props.output || '') }, [props.output])
     return (
       <div>
