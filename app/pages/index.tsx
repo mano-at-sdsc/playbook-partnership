@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import { MetaNodeDataType } from '@/spec/metanode'
 import krg from '@/app/krg'
 
+const Button = dynamic(() => import('@blueprintjs/core').then(({ Button }) => Button))
 const JsonEditor = dynamic(() => import('@/app/components/JsonEditor'))
 
 export default function App() {
@@ -58,7 +59,7 @@ export default function App() {
                 <span> =&gt; </span>
               </>
             ) : null}
-            <button
+            <Button
               className={[
                 Object.values(proc.inputs)
                   .some((i) => i.spec === current.type) ? 'font-bold' : '',
@@ -85,7 +86,7 @@ export default function App() {
                   })
                 }
               }}
-            >{proc.spec}</button>
+            >{proc.spec}</Button>
             <span> =&gt; </span>
             <span className="bg-secondary rounded-full p-3">{proc.output.spec}</span>
           </div>
@@ -109,13 +110,13 @@ export default function App() {
           />
         </div>
         <div className={styles.Examples}>
-          <button
+          <Button
             className="bg-primary rounded-md p-2"
             onClick={() => {
               setPrompt(undefined)
               setCurrent(prev)
-            }}>Prev</button>
-          <button
+            }}>Prev</Button>
+          <Button
             className="bg-primary rounded-md p-2"
             onClick={() => {
               setPrompt(undefined)
@@ -123,11 +124,11 @@ export default function App() {
                 type: '',
                 data: ''
               })
-            }}>Reset</button>
+            }}>Reset</Button>
           {krg.getDataNodes()
             .filter((node): node is MetaNodeDataType & { meta: { example: unknown } } => 'example' in node.meta)
             .map(node => (
-              <button
+              <Button
                 key={node.spec}
                 className="bg-primary rounded-md p-2"
                 onClick={() => {
@@ -137,7 +138,7 @@ export default function App() {
                     data: node.codec.encode(node.meta.example),
                   })
                 }}
-              >{node.spec}</button>
+              >{node.spec}</Button>
             ))}
         </div>
       </div>
